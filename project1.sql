@@ -143,41 +143,36 @@ as
 
 select * from WyswietlRoczajePaczek
 ----------------------------------------------------------------------------------
+
+
 ------------------------------------------------- Procedury
 
 
+------------------------------------- Aktualizuje adres
+CREATE PROCEDURE Pr1
+(@IdAdresu INT, @Miejscowosc nvarchar(30),  @Ulica nvarchar(30), @NrDomu INT)
+AS
+	UPDATE Adresy  SET Adresy.Miejscowosc=@Miejscowosc, Adresy.Ulica=@Ulica, Adresy.NrDomu=@NrDomu
+	WHERE Adresy.IdAdresu=@IdAdresu
 
+exec Pr1 5,'Nowy Sacz', 'Lwowska', 44
 
+--------------------------------------- Wyswietla samochod o pojemnosci podanej jako argument
+Create PROCEDURE Pr6
+@Pojemnosc INT
+AS
+	SELECT * FROM DaneSamochodow
+	WHERE DaneSamochodow.Pojemność=@Pojemnosc
 
+exec Pr3 '600'
 
+------------------------------------- Dodaje nowego zleceniodawce
+Create PROCEDURE Pr7
+@IdOsoby INT, @IdZgloszenia INT, @IdPrzesylki INT, @DodatkoweInformacje nvarchar(400)
+as
+	INSERT INTO Zleceniodawcy values (@IdOsoby, @IdZgloszenia, @IdPrzesylki,@DodatkoweInformacje)
 
--- ------------------------------------- Aktualizuje przewodnika dla podanej grupy
--- CREATE PROCEDURE Pr2
--- (@NazwaGrupy nvarchar(30), @PrzewodnikID int)
--- AS
--- 	UPDATE Grupy  SET Grupy.PrzewodnikID=@PrzewodnikID
--- 	WHERE Grupy.NazwaGrupy=@NazwaGrupy
---
--- exec Pr2 'Pracownicy PKP', 2
---
--- ------------------------------------- Wyswietla dane wycieczki podanej jako argument
--- Create PROCEDURE Pr3
--- @Miejsce_wycieczki nvarchar(30)
--- AS
--- 	SELECT * FROM Wycieczki
--- 	WHERE Wycieczki.Cel=@Miejsce_wycieczki
---
--- exec Pr3 'Dubrownik'
---
--- ------------------------------------- Dodaje nowego przewodnika
--- Create PROCEDURE Pr4
--- @PracownikID int, @Imie nvarchar(20), @Nazwisko nvarchar(30), @status nvarchar(3)
--- as
--- 	INSERT INTO Przewodnicy values (@PracownikID,@Imie,@Nazwisko,@status)
---
--- exec Pr4 8,'Lucjan','Nowak','Tak'
-
-
+exec Pr7 7, 92333, 11, 'Firma Nazwa'
 
 ------------------------------------- wypisuje paczki o cennie wiekszej niz podana good
 CREATE PROCEDURE Pr8
@@ -188,13 +183,11 @@ AS
 
 exec  Pr8 500
 
-
-
 -- ------------------------------------------------- Funkcje
---
--- ------------------------------------- wypisuje ilosc wolnych miejsc w podanej wycieczce
+
+-- ------------------------------------- wypisuje imie i nazwisko o danym id todo zrobic funkcje
 -- create function fun1
--- (@IdWycieczki int)
+-- (@IdOsoby int)
 -- returns table
 -- AS
 -- return
@@ -208,3 +201,6 @@ exec  Pr8 500
 -- )
 --
 -- select * from fun1 (1)
+
+--todo
+--todo zrobic opis, sprawdzic czy dziala wszsystko, sprawdzic czy wszystko z listy jest zrobione
