@@ -49,7 +49,7 @@ INSERT INTO Adresy VALUES (1, 'Bobowa', 'Grunwaldzka', 84), (2, 'Nowy Sacz', '3 
 
 INSERT INTO Osoby VALUES (93111712133, 'Jan', 'Kowalski', 1), (93111212133, 'Maciek', 'Borkowski', 2), (91111742133, 'Adam', 'Poniatowski', 3), (83111712133, 'Mariola', 'Katra', 4);
 
-INSERT INTO DaneSamochodow VALUES (1, 'Fiat', 'Ducato', 3000, 3, 'KGR44AA', 2008), (2, 'Iveco', 'Daily', 3500, 2, 'KR G4DS', 2010);
+INSERT INTO DaneSamochodow VALUES (1, 'Fiat', 'Ducato', 3000, 3, 'KGR44AA', '2008-01-01'), (2, 'Iveco', 'Daily', 3500, 2, 'KR G4DS', '2010-01-01');
 
 INSERT INTO PrzydzialSamochodow VALUES (1, 'KGR', 1234, 200, 1), (2, 'KRA', 200, 200, 2),(3, 'KNS', 100, 100, NULL) ;
 
@@ -65,6 +65,7 @@ INSERT INTO Zleceniodawcy VALUES (91111742133, 1, 'Firma abc'), (83111712133, 2,
 -- ODCZYT DANYCH
 
 SELECT * FROM Przesylki;
+SELECT * FROM DaneSamochodow;
 
 ------------------------------------------------- Moje widoki
 
@@ -208,3 +209,74 @@ exec  Pr8 5
 
 --todo
 --todo zrobic opis, sprawdzic czy dziala wszsystko, sprawdzic czy wszystko z listy jest zrobione
+
+
+
+
+-- ------ TRIGGERY 
+
+-- Opis: trigger zabezpiecza bazę przed cofaniem "licznika" dowiezionych paczek w tabeli "PrzydzialSamochodow" 
+
+CREATE TRIGGER T1 ON PrzydzialSamochodow AFTER UPDATE
+AS
+IF UPDATE(IloscDowiezionychPaczek)
+BEGIN
+DECLARE @StaraIloscDowPaczek INT
+DECLARE @NowaIloscDowPaczek INT
+SET @StaraIloscDowPaczek = (SELECT IloscDowiezionychPaczek FROM DELETED)
+SET @NowaIloscDowPaczek = (SELECT IloscDowiezionychPaczek FROM inserted)
+IF @StaraIloscDowPaczek >= @NowaIloscDowPaczek
+	BEGIN
+		ROLLBACK
+		RAISERROR('Liczba dowiezionych paczek musi byc wieksza od poprzedniej ! ', 16,1)
+	END
+END
+
+
+UPDATE PrzydzialSamochodow SET IloscDowiezionychPaczek = 2445 WHERE IdZespolu = 1;
+
+
+-- Opis: trigger zabezpiecza przed aktualizacja wieku samochodow 
+-- Wraz z triggerem został stworzony Check Constraint dla Insertów - wymagany jest wiek młodszy niż 17 lat 
+ 
+CREATE TRIGGER T2 ON DaneSamochodow AFTER UPDATE
+AS
+IF UPDATE(RokProdukcji)
+BEGIN
+DECLARE @StaryRokProdukcji INT
+DECLARE @NowyRokProdukcji INT
+SET @StaryRokProdukcji = (SELECT DATEPART(YEAR,RokProdukcji) FROM DELETED)
+SET @NowyRokProdukcji = (SELECT DATEPART(YEAR,RokProdukcji) FROM inserted)
+IF @NowyRokProdukcji <> @StaryRokProdukcji
+	BEGIN
+		ROLLBACK
+		RAISERROR('Nie wolno aktualizowac roku produkcji!', 16,1)
+	END
+END
+
+-- todo: sprawdzić to ALTER TABLE na czystej bazie 
+
+ALTER TABLE DaneSamochodow
+ADD CONSTRAINT C_DaneSamochodow CHECK (RokProdukcji >= '2000-01-01')
+
+INSERT INTO DaneSamochodow VALUES (5, 'Iveco', 'Daily', 2500, 2, 'KR A4D5', '1993-01-01');
+
+UPDATE DaneSamochodow SET RokProdukcji = '2008-01-01' WHERE IdSamochodu = 1;
+
+
+-- Opis: trigger sprawdzajacy poprawnosc nr PESEL
+
+CREATE TRIGGER T3 ON Osoby AFTER INSERT
+AS
+BEGIN
+IF Exists(Select * From inserted Where Len(Pesel) <> 11) 
+	BEGIN
+		ROLLBACK
+		RAISERROR('Niepoprawny PESEL!', 16,1)
+	END
+END
+
+
+INSERT INTO Osoby VALUES ('111111111112', 'Andrzej', 'Nowacki', 1);
+
+SELECT * FROM Osoby
