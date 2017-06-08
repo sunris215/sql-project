@@ -1,4 +1,5 @@
 CREATE DATABASE Projekt_1
+
 Use Projekt_1
 CREATE TABLE DaneSamochodow
 (
@@ -32,7 +33,8 @@ IdOsoby VARCHAR(13) NOT NULL REFERENCES Osoby(Pesel), DataZatrudnienia DATE NOT 
 
 CREATE TABLE Przesylki
 (
-IdPrzesylki INT NOT NULL PRIMARY KEY, Rodzaj INT NOT NULL REFERENCES RodzajePaczek(IdRodzaju), Data DATETIME NOT NULL, IdAdresu INT NOT NULL REFERENCES Adresy(IdAdresu), KosztPaczki MONEY, Dostarczona BOOLEAN NOT NULL DEFAULT FALSE
+IdPrzesylki INT NOT NULL PRIMARY KEY, Rodzaj INT NOT NULL REFERENCES RodzajePaczek(IdRodzaju), 
+Data DATETIME NOT NULL, IdAdresu INT NOT NULL REFERENCES Adresy(IdAdresu), KosztPaczki MONEY, Dostarczona BIT NOT NULL DEFAULT (0)
 )
 
 CREATE TABLE Zleceniodawcy
@@ -55,7 +57,7 @@ INSERT INTO Pracownicy VALUES (93111712133, '2015-01-01', 3000, 1, 1), (93111212
 
 INSERT INTO RodzajePaczek VALUES (1, 'ZWYKLA', 'STD'), (2, 'ZWYKLA UBEZP', 'STDUB'), (3, 'POBRANIOWA', 'POB'), (4, 'SZYBKA', 'PR1');
 
-INSERT INTO Przesylki VALUES (1, 1, '2017-05-05', 3, 40),(2, 4, '2017-03-05', 4, 30, FALSE);
+INSERT INTO Przesylki VALUES (1, 1, '2017-05-05', 3, 40, 2),(2, 4, '2017-03-05', 4, 30, 0);
 
 INSERT INTO Zleceniodawcy VALUES (91111742133, 1, 'Firma abc'), (83111712133, 2, 'Firma xyz');
 
@@ -66,18 +68,18 @@ SELECT * FROM Przesylki;
 
 ------------------------------------------------- Moje widoki
 
-create view WyswietlSamochoduMarkiOpel
+create view WyswietlSamochoduMarkiFiat
 as
 	SELECT DaneSamochodow.Model, DaneSamochodow.Pojemność, DaneSamochodow.IloscMiejsc
 	FROM DaneSamochodow
-	WHERE Marka='Opel'
+	WHERE Marka='Fiat'
 
-select * from WyswietlSamochoduMarkiOpel
+select * from WyswietlSamochoduMarkiFiat
 ----------------------------------------------------------------------------------
 
 create view WyswietlPaczki
 as
-	SELECT RodzajePaczek.Nazwa, RodzajePaczek.Nazwa
+	SELECT RodzajePaczek.Nazwa, RodzajePaczek.Oznaczenie
 	FROM RodzajePaczek
 
 select * from WyswietlPaczki
@@ -118,7 +120,7 @@ as
 	LEFT JOIN Osoby O
 	ON Z.IdOsoby = O.Pesel
 	JOIN Przesylki P
-	ON Zleceniodawcy.IdZgloszenia = P.IdPrzesylki
+	ON Z.IdZgloszenia = P.IdPrzesylki
 	JOIN Adresy A
 	ON A.IdAdresu = O.IdAdresu
 
@@ -127,7 +129,7 @@ select * from WyswietlZleceniodawcowOrazIchPrzesylki
 
 create view WyswietlDochody
 as
-	SELECT Z.
+	SELECT P.KosztPaczki
 	FROM Zleceniodawcy Z RIGHT JOIN Przesylki P
 	ON Z.IdZgloszenia=P.IdPrzesylki
 	LEFT JOIN Osoby O
@@ -138,7 +140,7 @@ select * from WyswietlDochody
 
 create view WyswietlRoczajePaczek
 as
-	SELECT Nazwa, Oznaczenie, Przesylki.
+	SELECT Nazwa, Oznaczenie
 	FROM RodzajePaczek
 
 select * from WyswietlRoczajePaczek
@@ -155,7 +157,9 @@ AS
 	UPDATE Adresy  SET Adresy.Miejscowosc=@Miejscowosc, Adresy.Ulica=@Ulica, Adresy.NrDomu=@NrDomu
 	WHERE Adresy.IdAdresu=@IdAdresu
 
-exec Pr1 5,'Nowy Sacz', 'Lwowska', 44
+exec Pr1 1,'Nowy Sacz', 'Lwowska', 44
+
+SELECT * FROM Adresy WHERE IdAdresu = 1;
 
 --------------------------------------- Wyswietla samochod o pojemnosci podanej jako argument
 Create PROCEDURE Pr6
@@ -164,15 +168,15 @@ AS
 	SELECT * FROM DaneSamochodow
 	WHERE DaneSamochodow.Pojemność=@Pojemnosc
 
-exec Pr3 '600'
+exec Pr6 '3500'
 
 ------------------------------------- Dodaje nowego zleceniodawce
 Create PROCEDURE Pr7
 @IdOsoby INT, @IdZgloszenia INT, @IdPrzesylki INT, @DodatkoweInformacje nvarchar(400)
 as
-	INSERT INTO Zleceniodawcy values (@IdOsoby, @IdZgloszenia, @IdPrzesylki,@DodatkoweInformacje)
+	INSERT INTO Zleceniodawcy values (@IdOsoby, @IdZgloszenia ,@DodatkoweInformacje)
 
-exec Pr7 7, 92333, 11, 'Firma Nazwa'
+exec Pr7 93111712133, 92333, 'Firma Nazwa'
 
 ------------------------------------- wypisuje paczki o cennie wiekszej niz podana good
 CREATE PROCEDURE Pr8
@@ -181,7 +185,7 @@ AS
 	SELECT * FROM Przesylki
 	WHERE Przesylki.KosztPaczki>@Koszt
 
-exec  Pr8 500
+exec  Pr8 5
 
 -- ------------------------------------------------- Funkcje
 
