@@ -186,36 +186,36 @@ SELECT * FROM Adresy WHERE IdAdresu = 1;
 
 ------------------ Wyswietla samochod o pojemnosci podanej jako argument -------
 
-Create PROCEDURE Pr6
+Create PROCEDURE Pr2
 @Pojemnosc INT
 AS
 	SELECT * FROM DaneSamochodow
 	WHERE DaneSamochodow.Pojemność=@Pojemnosc
 
-exec Pr6 '3500'
+exec Pr2
 
 ----------------- Dodaje nowego zleceniodawce -----------------------------------
 
-Create PROCEDURE Pr7
+Create PROCEDURE Pr3
 @IdOsoby INT, @IdZgloszenia INT, @IdPrzesylki INT, @DodatkoweInformacje nvarchar(400)
 as
 	INSERT INTO Zleceniodawcy values (@IdOsoby, @IdZgloszenia ,@DodatkoweInformacje)
 
-exec Pr7 93111712133, 92333, 'Firma Nazwa'
+exec Pr3 93111712133, 92333, 'Firma Nazwa'
 
------------------ Wypisuje paczki o cennie wiekszej niz podana good ------------
+----------------- Wypisuje paczki o cennie wiekszej niz podana  ---------------
 
-CREATE PROCEDURE Pr8
+CREATE PROCEDURE Pr4
 (@Koszt float)
 AS
 	SELECT * FROM Przesylki
 	WHERE Przesylki.KosztPaczki>@Koszt
 
-exec  Pr8 5
+exec  Pr4 5
 
 ------------------------------------- FUNCKJE ---------------------------------
 
----------------- Wypisuje imie i nazwisko osovt danym id pracownika -----------
+---------------- Wypisuje imie i nazwisko osoby danym id pracownika -----------
 
 create function fun1 -- todo Dawid can you chceck it?
 (@IdOsoby int)
@@ -230,6 +230,20 @@ return
 )
 
 select * from fun1 (1)
+
+
+---------------- Wypisuje informacje o zleceniodawcy po poddanymn id -----------
+create function fun2 -- todo Dawid can you chceck it?
+	(@IdZleceniodawcy int)
+	returns table
+	AS
+	return
+	(
+	select Z.IdOsoby as ID, Z.DodatkoweInformacje as DodatkoweInformacje
+	from Zleceniodawcy Z
+	where P.IdOsoby=@IdOsoby
+	)
+select * from fun2 (1)
 
 ------------------------------------- TRIGGERY ---------------------------------
 
@@ -303,4 +317,6 @@ SELECT * FROM Osoby
 
 
 --todo
---todo zrobic opis, sprawdzic czy dziala wszsystko, sprawdzic czy wszystko z listy jest zrobione
+--todo zrobic opis,
+-- sprawdzic czy dziala wszsystko,
+-- sprawdzic czy wszystko z listy jest zrobione
