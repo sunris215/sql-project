@@ -192,7 +192,7 @@ AS
 	SELECT * FROM DaneSamochodow
 	WHERE DaneSamochodow.Pojemność=@Pojemnosc
 
-exec Pr2
+exec Pr2 500
 
 ----------------- Dodaje nowego zleceniodawce -----------------------------------
 
