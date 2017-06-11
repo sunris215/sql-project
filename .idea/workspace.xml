@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="e5eb41ca-d0dd-4958-afef-9f435eb1bda8" name="Default" comment="Added views">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/~$is_Mariusz_Borkowski Dawid_Roz.docx" afterPath="" />
+    <list default="true" id="e5eb41ca-d0dd-4958-afef-9f435eb1bda8" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Opis_Mariusz_Borkowski Dawid_Roz.docx" afterPath="$PROJECT_DIR$/Opis_Mariusz_Borkowski Dawid_Roz.docx" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/project1.sql" afterPath="$PROJECT_DIR$/project1.sql" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -19,8 +18,8 @@
       <file leaf-file-name="project1.sql" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/project1.sql">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="157">
-              <caret line="179" column="96" lean-forward="true" selection-start-line="179" selection-start-column="96" selection-end-line="179" selection-end-column="96" />
+            <state relative-caret-position="333">
+              <caret line="156" column="0" lean-forward="true" selection-start-line="156" selection-start-column="0" selection-end-line="156" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -193,7 +192,7 @@
       <workItem from="1497010567026" duration="5352000" />
       <workItem from="1497089335305" duration="381000" />
       <workItem from="1497109261817" duration="34000" />
-      <workItem from="1497162885999" duration="161000" />
+      <workItem from="1497162885999" duration="1255000" />
     </task>
     <task id="LOCAL-00001" summary="First">
       <created>1496698805769</created>
@@ -230,11 +229,25 @@
       <option name="project" value="LOCAL" />
       <updated>1497016963946</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Added views">
+      <created>1497167921240</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1497167921240</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Added views">
+      <created>1497168663472</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1497168663472</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="14699000" />
+    <option name="totallyTimeSpent" value="15793000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1680" height="1050" extended-state="0" />
@@ -388,8 +401,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/project1.sql">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="157">
-          <caret line="179" column="96" lean-forward="true" selection-start-line="179" selection-start-column="96" selection-end-line="179" selection-end-column="96" />
+        <state relative-caret-position="333">
+          <caret line="156" column="0" lean-forward="true" selection-start-line="156" selection-start-column="0" selection-end-line="156" selection-end-column="0" />
           <folding />
         </state>
       </provider>
