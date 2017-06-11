@@ -197,7 +197,7 @@ exec Pr2 500
 ----------------- Dodaje nowego zleceniodawce -----------------------------------
 
 Create PROCEDURE Pr3
-@IdOsoby INT, @IdZgloszenia INT, @IdPrzesylki INT, @DodatkoweInformacje nvarchar(400)
+@IdOsoby INT, @IdZgloszenia INT, @DodatkoweInformacje nvarchar(400)
 as
 	INSERT INTO Zleceniodawcy values (@IdOsoby, @IdZgloszenia ,@DodatkoweInformacje)
 
